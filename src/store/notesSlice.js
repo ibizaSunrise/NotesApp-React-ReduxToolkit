@@ -2,16 +2,19 @@ import { createSlice, current } from '@reduxjs/toolkit'
 
 const notesSlice = createSlice({
   name: 'todos',
-  initialState: JSON.parse(localStorage.getItem('notesState')) || [],
+  initialState: {
+    notes: JSON.parse(localStorage.getItem('notesState')) || [],
+  },
+ 
   reducers: {
     addNote: (state, action) => {
       console.log('before', current(state))
-      state.push(action.payload)
+      state.notes.push(action.payload)
       console.log('after', current(state))
     },
-    getNoteByIde(state, action){
-      
-    },
+   deleteNote(state, action){
+     state.notes = state.notes.filter(el => el.id !== action.payload) 
+   }
   
   },
 })
@@ -20,4 +23,5 @@ const notesSlice = createSlice({
 export default notesSlice.reducer
 export const {
   addNote,
+  deleteNote
 } = notesSlice.actions;

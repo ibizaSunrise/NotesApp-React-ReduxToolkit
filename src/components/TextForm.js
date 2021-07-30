@@ -6,7 +6,7 @@ export default function TextForm() {
   const [checked, setChecked] = useState(false)
   const [value, setValue] = useState('')
   const dispatch = useDispatch()
-  const notes = useSelector(state => state.notes)
+  const {notes} = useSelector(state => state.notes)
 
   //helper functions
   function createTitle() {
