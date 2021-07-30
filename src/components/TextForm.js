@@ -6,8 +6,9 @@ export default function TextForm() {
   const [checked, setChecked] = useState(false)
   const [value, setValue] = useState('')
   const dispatch = useDispatch()
-  const {notes} = useSelector(state => state.notes)
+  const {notes, note} = useSelector(state => state.notes)
 
+  console.log(note)
   //helper functions
   function createTitle() {
     let date = new Date()
@@ -26,7 +27,8 @@ export default function TextForm() {
     dispatch(addNote({
       id: Date.now().toString(),
       title: createTitle(),
-      text: value
+      text: value,
+      selected: false
     }))
     setValue('')
   }
@@ -43,7 +45,7 @@ export default function TextForm() {
       <div className="mb-3">
         <label htmlFor="exampleFormControlTextarea1" className="form-label">Create Note</label>
         <textarea className="form-control"
-          value={value}
+          value={note.text ? note.text : value}
           onChange={(e) => setValue(e.target.value)}
           id="exampleFormControlTextarea1" rows="3"></textarea>
       </div>

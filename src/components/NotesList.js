@@ -1,17 +1,22 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { deleteNote } from '../store/notesSlice'
+import { deleteNote, toggleSelectedNote } from '../store/notesSlice'
 
 
 export default function NotesList() {
-    const {notes} = useSelector(state => state.notes)
+    const { notes} = useSelector(state => state.notes)
     const dispatch = useDispatch()
-    //handlers
 
+    //handlers
     function deleteNoteByClick(e, id) {
         e.stopPropagation()
         console.log('click' + id)
         dispatch(deleteNote(id))
+    }
+
+    function selectNoteByClick(id) {
+       
+        dispatch(toggleSelectedNote(id))
     }
 
     //LS
@@ -27,12 +32,15 @@ export default function NotesList() {
                         ?
                         notes.map(note => (
                             <li
-                                key={note.id} className="list-group-item d-flex justify-content-between">
+                                key={note.id}
+                                className={note.selected ? "list-group-item d-flex justify-content-between active" : "list-group-item d-flex justify-content-between"}
+                                onClick = {() =>selectNoteByClick(note.id)}
+                            >
                                 {note.title}
                                 <span type="button"
-                                 className="btn-close"
-                                 onClick = {e => deleteNoteByClick(e, note.id)}
-                                 />
+                                    className="btn-close"
+                                    onClick={e => deleteNoteByClick(e, note.id)}
+                                />
                             </li>
                         )
                         )
