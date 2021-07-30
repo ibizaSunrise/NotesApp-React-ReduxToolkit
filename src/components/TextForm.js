@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addNote } from '../store/notesSlice'
+import { addNote, changeText } from '../store/notesSlice'
 
 export default function TextForm() {
   const [checked, setChecked] = useState(false)
@@ -8,7 +8,7 @@ export default function TextForm() {
   const dispatch = useDispatch()
   const {notes, note} = useSelector(state => state.notes)
 
-  console.log(note)
+
   //helper functions
   function createTitle() {
     let date = new Date()
@@ -23,16 +23,27 @@ export default function TextForm() {
 
   //handler
   function handleClick() {
-    // !checked ? 
-    dispatch(addNote({
-      id: Date.now().toString(),
-      title: createTitle(),
-      text: value,
-      selected: false
-    }))
-    setValue('')
+     if(!checked) {
+      dispatch(addNote({
+        id: Date.now().toString(),
+        title: createTitle(),
+        text: value,
+        selected: false
+      }))
+      setValue('')
+     }else{
+       dispatch(changeText(value))
+     }
+  
+    
   }
 
+
+  function handleChangeInput(e){
+  
+      setValue(e.target.value )
+
+  }
   //LS
   useEffect(() => {
     localStorage.setItem('notesState', JSON.stringify(notes))
@@ -46,7 +57,7 @@ export default function TextForm() {
         <label htmlFor="exampleFormControlTextarea1" className="form-label">Create Note</label>
         <textarea className="form-control"
           value={note.text ? note.text : value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={handleChangeInput}
           id="exampleFormControlTextarea1" rows="3"></textarea>
       </div>
 

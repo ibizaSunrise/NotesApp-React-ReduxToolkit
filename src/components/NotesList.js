@@ -14,8 +14,7 @@ export default function NotesList() {
         dispatch(deleteNote(id))
     }
 
-    function selectNoteByClick(id) {
-       
+    function selectNoteByClick(id) {    
         dispatch(toggleSelectedNote(id))
     }
 
