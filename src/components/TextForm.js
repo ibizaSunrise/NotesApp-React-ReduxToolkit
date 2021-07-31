@@ -6,8 +6,7 @@ export default function TextForm() {
   const [checked, setChecked] = useState(false)
   const [value, setValue] = useState('')
   const dispatch = useDispatch()
-  const {notes, note} = useSelector(state => state.notes)
-
+  const { notes, note } = useSelector(state => state.notes)
 
   //helper functions
   function createTitle() {
@@ -16,14 +15,14 @@ export default function TextForm() {
   }
 
   function addZero(n) {
-    if (n > 0 && n < 10) return ('0' + n)
+    if (n >= 0 && n < 10) return ('0' + n)
     else return n;
   }
 
 
   //handler
   function handleClick() {
-     if(!checked) {
+    if (!checked) {
       dispatch(addNote({
         id: Date.now().toString(),
         title: createTitle(),
@@ -31,33 +30,35 @@ export default function TextForm() {
         selected: false
       }))
       setValue('')
-     }else{
-       dispatch(changeText(value))
-     }
-  
-    
+    } else {
+      dispatch(changeText(value))
+      setValue('')
+    }
   }
 
-
-  function handleChangeInput(e){
-  
-      setValue(e.target.value )
-
-  }
   //LS
   useEffect(() => {
     localStorage.setItem('notesState', JSON.stringify(notes))
   }, [notes])
+
+  //value
+  useEffect(() => {
+    if (note.text) {
+      setValue(note.text)
+    } else {
+      setValue('')
+    }
+  }, [note])
 
   return (
     <div className="col-6">
 
       {/* textarea */}
       <div className="mb-3">
-        <label htmlFor="exampleFormControlTextarea1" className="form-label">Create Note</label>
+        <label htmlFor="exampleFormControlTextarea1" className="form-label">{!checked ? "Create Note" : "Select Note and edit"}</label>
         <textarea className="form-control"
-          value={note.text ? note.text : value}
-          onChange={handleChangeInput}
+          value={value}
+          onChange={e => setValue(e.target.value)}
           id="exampleFormControlTextarea1" rows="3"></textarea>
       </div>
 
@@ -71,7 +72,7 @@ export default function TextForm() {
 
 
       {/* button */}
-      <button type="button" onClick={handleClick} className="btn btn-success mt-3">Add Note</button>
+      <button type="button" onClick={handleClick} className="btn btn-success mt-3">{!checked ? "Add New Note" : "Edit Note"}</button>
 
     </div>
   )

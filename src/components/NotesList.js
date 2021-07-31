@@ -4,17 +4,17 @@ import { deleteNote, toggleSelectedNote } from '../store/notesSlice'
 
 
 export default function NotesList() {
-    const { notes} = useSelector(state => state.notes)
+    const { notes, searchArr } = useSelector(state => state.notes)
     const dispatch = useDispatch()
+    console.log(searchArr)
 
     //handlers
     function deleteNoteByClick(e, id) {
         e.stopPropagation()
-        console.log('click' + id)
         dispatch(deleteNote(id))
     }
 
-    function selectNoteByClick(id) {    
+    function selectNoteByClick(id) {
         dispatch(toggleSelectedNote(id))
     }
 
@@ -27,13 +27,13 @@ export default function NotesList() {
         <div className="col-4 mt-4">
             <ul className="list-group ">
                 {
-                    notes.length !== 0
+                    notes.length
                         ?
                         notes.map(note => (
                             <li
                                 key={note.id}
-                                className={note.selected ? "list-group-item d-flex justify-content-between active" : "list-group-item d-flex justify-content-between"}
-                                onClick = {() =>selectNoteByClick(note.id)}
+                                className={`list-group-item d-flex justify-content-between ${note.selected ? "active" : ""}`}
+                                onClick={() => selectNoteByClick(note.id)}
                             >
                                 {note.title}
                                 <span type="button"
