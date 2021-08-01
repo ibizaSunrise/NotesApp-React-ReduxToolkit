@@ -1,12 +1,17 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteNote, toggleSelectedNote } from '../store/notesSlice'
+import {
+    CSSTransition,
+    TransitionGroup,
+} from 'react-transition-group';
+import '../animation.css'
 
 
 export default function NotesList() {
     const { notes, searchArr } = useSelector(state => state.notes)
     const dispatch = useDispatch()
-    
+
     //handlers
     function deleteNoteByClick(e, id) {
         e.stopPropagation()
@@ -24,12 +29,13 @@ export default function NotesList() {
 
     //content
     const content = (arr) => {
-        return arr.length
+         return arr.length
             ?
-            arr.map(note => (
+           arr.map(note => (
+                <CSSTransition key={note.id} timeout = {500} classNames = "my-animate">  
                 <li
                     key={note.id}
-                    className={`list-group-item d-flex justify-content-between ${note.selected ? "active" : ""}`}
+                    className={`list-group-item d-flex justify-content-between my-animate ${note.selected ? "active" : ""}`}
                     onClick={() => selectNoteByClick(note.id)}
                 >
                     {note.title}
@@ -38,6 +44,7 @@ export default function NotesList() {
                         onClick={e => deleteNoteByClick(e, note.id)}
                     />
                 </li>
+                </CSSTransition>
             )
             )
             : <p>Notes absence</p>
@@ -46,10 +53,10 @@ export default function NotesList() {
 
     return (
         <div className="col-4 mt-4">
-            <ul className="list-group ">
-                {searchArr.length ? content(searchArr) : content(notes)   
-                }
-            </ul>
+            <TransitionGroup component = 'ul' className="list-group">
+                    {searchArr.length ? content(searchArr) : content(notes)
+                    }   
+            </TransitionGroup>
         </div>
     )
 }
