@@ -6,8 +6,7 @@ import { deleteNote, toggleSelectedNote } from '../store/notesSlice'
 export default function NotesList() {
     const { notes, searchArr } = useSelector(state => state.notes)
     const dispatch = useDispatch()
-    console.log(searchArr)
-
+    
     //handlers
     function deleteNoteByClick(e, id) {
         e.stopPropagation()
@@ -23,29 +22,33 @@ export default function NotesList() {
         localStorage.setItem('notesState', JSON.stringify(notes))
     }, [notes])
 
+    //content
+    const content = (arr) => {
+        return arr.length
+            ?
+            arr.map(note => (
+                <li
+                    key={note.id}
+                    className={`list-group-item d-flex justify-content-between ${note.selected ? "active" : ""}`}
+                    onClick={() => selectNoteByClick(note.id)}
+                >
+                    {note.title}
+                    <span type="button"
+                        className="btn-close"
+                        onClick={e => deleteNoteByClick(e, note.id)}
+                    />
+                </li>
+            )
+            )
+            : <p>Notes absence</p>
+
+    }
+
     return (
         <div className="col-4 mt-4">
             <ul className="list-group ">
-                {
-                    notes.length
-                        ?
-                        notes.map(note => (
-                            <li
-                                key={note.id}
-                                className={`list-group-item d-flex justify-content-between ${note.selected ? "active" : ""}`}
-                                onClick={() => selectNoteByClick(note.id)}
-                            >
-                                {note.title}
-                                <span type="button"
-                                    className="btn-close"
-                                    onClick={e => deleteNoteByClick(e, note.id)}
-                                />
-                            </li>
-                        )
-                        )
-                        : <p>Notes absence</p>
+                {searchArr.length ? content(searchArr) : content(notes)   
                 }
-
             </ul>
         </div>
     )

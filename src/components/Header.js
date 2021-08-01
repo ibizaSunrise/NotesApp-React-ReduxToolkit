@@ -1,18 +1,15 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { filterNotesList } from '../store/notesSlice'
 
 export default function Header() {
     const [value, setValue] = useState('')
     const dispatch = useDispatch()
-   
-
 
     function handlerClick(e) {
         e.preventDefault()
         dispatch(filterNotesList(value))
     }
-
 
     return (
         <nav className="navbar navbar-light bg-light">

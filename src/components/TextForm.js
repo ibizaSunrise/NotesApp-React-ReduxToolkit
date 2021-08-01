@@ -11,14 +11,13 @@ export default function TextForm() {
   //helper functions
   function createTitle() {
     let date = new Date()
-    return `${addZero(date.getDate())}.${addZero(date.getMonth())}.${date.getFullYear()}  ${addZero(date.getHours())}:${addZero(date.getMinutes())}:${addZero(date.getSeconds())}`
+    return `${addZero(date.getDate())}.${addZero(date.getMonth() + 1)}.${date.getFullYear()}  ${addZero(date.getHours())}:${addZero(date.getMinutes())}:${addZero(date.getSeconds())}`
   }
 
   function addZero(n) {
     if (n >= 0 && n < 10) return ('0' + n)
     else return n;
   }
-
 
   //handler
   function handleClick() {

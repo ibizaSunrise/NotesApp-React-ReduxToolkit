@@ -36,7 +36,7 @@ const notesSlice = createSlice({
         .join('.')
         console.log(str)
      
-      // state.searchArr = state.notes.filter(el => el.title.startWith(str))
+      state.searchArr = state.notes.filter(el => el.title.trim().startsWith(str))
 
     }
 
